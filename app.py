@@ -13,16 +13,22 @@ app.log.setLevel(logging.DEBUG)
 DSS_URL = "https://dss.dev.data.humancellatlas.org/v1"
 
 
-@app.route('/{bundle_uuid}')
-def index(bundle_uuid):
-    r = requests.get("{}/bundles/{}?replica=aws".format(DSS_URL, bundle_uuid))
-    bundle = r.json()
+def bundle_json_to_turtle_string(bundle):
     os.chdir('/tmp')
     file_name = bundle_to_rdf(bundle)
     turtle = ""
     with open("/tmp/{}".format(file_name), "r") as f:
         turtle = f.read()
-    return Response(body=turtle,
-                    status_code=200,
-                    headers={'Content-Type': 'text/turtle'})
+    return turtle
+
+@app.route('/{bundle_uuid}')
+def index(bundle_uuid):
+    r = requests.get("{}/bundles/{}?replica=aws".format(DSS_URL, bundle_uuid))
+    if r.status_code == 200:
+        turtle = bundle_json_to_turtle_string(r.json())
+        return Response(body=turtle,
+                        status_code=200,
+                        headers={'Content-Type': 'text/turtle'})
+    else:
+        return Response(body=r.json(), status_code=r.status_code)
 
