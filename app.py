@@ -2,9 +2,9 @@ import os
 import logging
 
 import requests
-from SPARQLWrapper import SPARQLWrapper
+#from SPARQLWrapper import SPARQLWrapper
 
-from chalicelib.bundle_to_rdf import bundle_to_rdf
+from hca_bundle_jsonld.bundle_to_rdf import bundle_to_rdf
 from chalice import Chalice, Response
 
 app = Chalice(app_name='hca-bundle-jsonld-lambda', debug=True)

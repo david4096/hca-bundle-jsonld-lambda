@@ -11,10 +11,12 @@ import requests
 import sys
 
 from rdflib.plugin import register, Parser
-import rdflib_jsonld
-from SPARQLWrapper import SPARQLWrapper
 from rdflib import Graph
+import rdflib_jsonld
 
+# Initialize JSONLDParser
+#register('json-ld', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
+register('application/ld+json', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
 
 # The context to inject into each bundle
 context = {
@@ -68,7 +70,6 @@ def add_to_graph(graph, file_uuid):
     bundle = r.json()
     bundle["@context"] = context
     bundle["@id"] = file_url
-    register('json-ld', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
     graph.parse(data=json.dumps(bundle), format='json-ld')
 
     return graph
@@ -93,8 +94,6 @@ def bundle_to_rdf(bundle):
 
 
 def main(argv=sys.argv[1:]):
-    # Initialize JSONLDParser
-    register('application/ld+json', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
     bundle_uuid = argv[0]
     bundle = get_bundle(bundle_uuid)
     bundle_to_rdf(bundle)
