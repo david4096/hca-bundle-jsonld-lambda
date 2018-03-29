@@ -12,11 +12,11 @@ import sys
 
 from rdflib.plugin import register, Parser
 from rdflib import Graph
+
 import rdflib_jsonld
 
 # Initialize JSONLDParser
-#register('json-ld', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
-register('application/ld+json', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
+register('json-ld', Parser, 'rdflib_jsonld.parser', 'JsonLDParser')
 
 # The context to inject into each bundle
 context = {

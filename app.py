@@ -2,7 +2,6 @@ import os
 import logging
 
 import requests
-#from SPARQLWrapper import SPARQLWrapper
 
 from hca_bundle_jsonld.bundle_to_rdf import bundle_to_rdf
 from chalice import Chalice, Response
@@ -26,8 +25,4 @@ def index(bundle_uuid):
     return Response(body=turtle,
                     status_code=200,
                     headers={'Content-Type': 'text/turtle'})
-
-
-# The view function above will return {"hello": "world"}
-# whenever you make an HTTP GET request to '/'.
 
